@@ -1,6 +1,9 @@
 <?php
 
-use Illuminate\Http\Request;
+declare(strict_types=1);
+
+use App\Http\Controllers\CardsController;
+use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,6 +17,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
-    return $request->user();
-});
+Route::middleware([])
+    ->group(
+        static function (Router $router) {
+            $router->apiResource('/cards', CardsController::class)->only(['index', 'store']);
+        }
+    );

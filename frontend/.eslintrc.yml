@@ -1,0 +1,84 @@
+parserOptions:
+  ecmaFeatures:
+    jsx: true
+  ecmaVersion: 2018
+  sourceType: module
+env:
+  browser: true
+  es6: true
+  node: true
+extends:
+  - "plugin:@typescript-eslint/recommended"
+  - "plugin:@next/next/recommended"
+  - "next/core-web-vitals"
+globals:
+  Atomics: readonly
+  SharedArrayBuffer: readonly
+  React: writable
+rules:
+  '@next/next/no-img-element': off
+  "@typescript-eslint/no-explicit-any": error
+  "@typescript-eslint/no-unused-vars": error
+  arrow-parens:
+    - error
+    - always
+  eol-last: error
+  indent:
+    - error
+    - 4
+    -
+      SwitchCase: 1
+  jsx-quotes:
+    - error
+    - prefer-double
+  jsx-a11y/alt-text: error
+  jsx-a11y/aria-role: error
+  jsx-a11y/img-redundant-alt: error
+  max-len:
+    - error
+    - code: 200
+  no-console: error
+  no-invalid-this: off
+  no-irregular-whitespace: error
+  no-multi-spaces: error
+  no-trailing-spaces: error
+  object-curly-spacing:
+    - error
+    - always
+    - objectsInObjects: true
+      arraysInObjects: true
+  one-var: off
+  operator-linebreak:
+    - error
+    - before
+  quotes:
+    - error
+    - single
+  react/jsx-boolean-value:
+    - error
+    - never
+  react/jsx-closing-bracket-location:
+    - error
+    - line-aligned
+  react/jsx-curly-spacing:
+    - error
+    - when: never
+      children: true
+  react/jsx-pascal-case: error
+  react/jsx-wrap-multilines:
+    - error
+    - prop: parens-new-line
+      declaration: parens-new-line
+      arrow: parens-new-line
+      return: parens-new-line
+      logical: parens-new-line
+      condition: parens-new-line
+  react/no-array-index-key: error
+  react/no-multi-comp: error
+  react/self-closing-comp: error
+  react-hooks/exhaustive-deps: warn
+  react-hooks/rules-of-hooks: error
+  require-jsdoc: off
+  semi:
+    - error
+    - always

@@ -23,6 +23,8 @@ RUN sed -i -e "s/post_max_size =.*/post_max_size = 100M/g" "$PHP_INI_DIR/php.ini
 
 RUN apt-get install -y libzip-dev && docker-php-ext-install zip
 
+RUN apt-get install -y libicu-dev && docker-php-ext-install intl
+
 #RUN pecl install -of imagick \
 #    && echo "extension=imagick.so" | tee /usr/local/etc/php/conf.d/imagick.ini
 
