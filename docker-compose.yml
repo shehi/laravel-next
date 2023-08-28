@@ -24,15 +24,15 @@ services:
     working_dir: /var/www
     volumes:
       - /tmp/.X11-unix:/tmp/.X11-unix
-      - .:/var/www
       - $HOME/.npm:/home/node/.npm
       - $HOME/.cache:/home/node/.cache
+      - .:/var/www
     environment:
       DISPLAY:
       MYUID: "${MYUID:-1000}"
       MYGID: "${MYGID:-1000}"
       FONTAWESOME_AUTH_TOKEN: ${FONTAWESOME_AUTH_TOKEN}
-    entrypoint: /usr/local/bin/docker-entrypoint.sh
+    entrypoint: ./.docker/node/scripts/docker-entrypoint.sh
     command: node
     stdin_open: true
     ipc: host
@@ -42,8 +42,8 @@ services:
       context: ./.docker/php
     working_dir: /var/www
     volumes:
-      - .:/var/www
       - $HOME/.cache:/home/php/.cache
+      - .:/var/www
     environment:
       WORKDIR: "/var/www"
       MYUID: "${MYUID:-1000}"

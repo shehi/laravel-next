@@ -66,4 +66,7 @@ RUN sed -i -e "s/%sudo.*/%sudo ALL=(ALL:ALL) NOPASSWD: ALL/g" /etc/sudoers
 COPY ./profile /etc/profile
 COPY ./profile /etc/bashrc
 
+COPY scripts/docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+COPY scripts/fix-container-uid-gid.sh /usr/local/bin/fix-container-uid-gid.sh
+
 USER php
