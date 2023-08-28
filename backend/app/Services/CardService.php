@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Enums\Sort;
-use App\Repositories\CardRepository;
+use App\Repositories\RepositoryInterface;
 use Illuminate\Support\Facades\Log;
 use JsonException;
 
 class CardService implements ServiceInterface, SortableInterface
 {
-    public function __construct(private readonly CardRepository $repository)
+    public function __construct(private readonly RepositoryInterface $repository)
     {
     }
 
