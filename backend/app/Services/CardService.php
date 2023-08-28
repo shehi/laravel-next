@@ -6,8 +6,6 @@ namespace App\Services;
 
 use App\Enums\Sort;
 use App\Repositories\RepositoryInterface;
-use Illuminate\Support\Facades\Log;
-use JsonException;
 
 class CardService implements ServiceInterface, SortableInterface
 {
@@ -15,19 +13,13 @@ class CardService implements ServiceInterface, SortableInterface
     {
     }
 
-    /**
-     * @throws JsonException
-     */
     public function fetch(): mixed
     {
-        $raw = $this->repository->fetch();
-
-        return json_decode($raw, true, 512, \JSON_THROW_ON_ERROR);
+        return $this->repository->fetch();
     }
 
     public function save(mixed $data): void
     {
-        Log::info('Submit successful.');
         $this->repository->save($data);
     }
 

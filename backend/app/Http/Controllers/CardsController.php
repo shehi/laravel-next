@@ -32,9 +32,10 @@ class CardsController extends Controller
         return response()->json($data);
     }
 
-    public function store(CardsRequest $request): JsonResponse
+    public function store(CardsRequest $request, CardService $service): JsonResponse
     {
         $data = $request->getPayload();
+        $service->save($data);
 
         return response()->json($data->all());
     }
