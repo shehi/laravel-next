@@ -1,0 +1,27 @@
+parserOptions:
+  ecmaFeatures:
+    jsx: true
+  ecmaVersion: 2018
+  sourceType: module
+env:
+  browser: true
+  es6: true
+  node: true
+  "cypress/globals": true
+extends:
+  - "plugin:@typescript-eslint/recommended"
+  - "plugin:cypress/recommended"
+  - "plugin:chai-friendly/recommended"
+plugins:
+  - cypress
+globals:
+  Atomics: readonly
+  SharedArrayBuffer: readonly
+  React: writable
+rules:
+  cypress/no-assigning-return-values: error
+  cypress/no-unnecessary-waiting: error
+  cypress/assertion-before-screenshot: warn
+  cypress/no-force: warn
+  cypress/no-async-tests: error
+  cypress/no-pause: error

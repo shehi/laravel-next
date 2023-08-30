@@ -17,22 +17,22 @@ services:
     build:
       args:
         NODE_VERSION: '18.16.1' # @see https://nodejs.org/en/download/releases
-        CYPRESS_VERSION: '12.17.2' # @see https://www.npmjs.com/package/cypress
+        CYPRESS_VERSION: '12.17.4' # @see https://www.npmjs.com/package/cypress
         CHROME_VERSION: '115.0.5790.110-1' # @see https://www.ubuntuupdates.org/package/google_chrome/stable/main/base/google-chrome-stable
         FIREFOX_VERSION: '116.0' # @see https://download-installer.cdn.mozilla.net/pub/firefox/releases/
       context: ./.docker/node
     working_dir: /var/www
     volumes:
       - /tmp/.X11-unix:/tmp/.X11-unix
-      - .:/var/www
       - $HOME/.npm:/home/node/.npm
       - $HOME/.cache:/home/node/.cache
+      - .:/var/www
     environment:
       DISPLAY:
       MYUID: "${MYUID:-1000}"
       MYGID: "${MYGID:-1000}"
       FONTAWESOME_AUTH_TOKEN: ${FONTAWESOME_AUTH_TOKEN}
-    entrypoint: /usr/local/bin/docker-entrypoint.sh
+    entrypoint: ./.docker/node/scripts/docker-entrypoint.sh
     command: node
     stdin_open: true
     ipc: host
@@ -42,8 +42,8 @@ services:
       context: ./.docker/php
     working_dir: /var/www
     volumes:
-      - .:/var/www
       - $HOME/.cache:/home/php/.cache
+      - .:/var/www
     environment:
       WORKDIR: "/var/www"
       MYUID: "${MYUID:-1000}"
@@ -54,7 +54,7 @@ services:
         discover_client_host=1
         idekey=PHPSTORM
         start_with_request=1
-      XDEBUG_MODE: debug
+      XDEBUG_MODE: off
       XDEBUG_SESSION: PHPSTORM
       # This should correspond to the server declared in PHPStorm `Preferences | Languages & Frameworks | PHP | Servers`
       # Then PHPStorm will use the corresponding path mappings

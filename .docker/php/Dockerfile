@@ -23,6 +23,8 @@ RUN sed -i -e "s/post_max_size =.*/post_max_size = 100M/g" "$PHP_INI_DIR/php.ini
 
 RUN apt-get install -y libzip-dev && docker-php-ext-install zip
 
+RUN apt-get install -y libicu-dev && docker-php-ext-install intl
+
 #RUN pecl install -of imagick \
 #    && echo "extension=imagick.so" | tee /usr/local/etc/php/conf.d/imagick.ini
 
@@ -63,5 +65,8 @@ RUN sed -i -e "s/%sudo.*/%sudo ALL=(ALL:ALL) NOPASSWD: ALL/g" /etc/sudoers
 
 COPY ./profile /etc/profile
 COPY ./profile /etc/bashrc
+
+COPY scripts/docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+COPY scripts/fix-container-uid-gid.sh /usr/local/bin/fix-container-uid-gid.sh
 
 USER php

@@ -54,7 +54,8 @@ return [
     'channels' => [
         'stack' => [
             'driver' => 'stack',
-            'channels' => ['single'],
+            'channels' => ['single', 'stdout'],
+            'level' => env('LOG_LEVEL', 'debug'),
             'ignore_exceptions' => false,
         ],
 
@@ -73,23 +74,13 @@ return [
             'replace_placeholders' => true,
         ],
 
-        'slack' => [
-            'driver' => 'slack',
-            'url' => env('LOG_SLACK_WEBHOOK_URL'),
-            'username' => 'Laravel Log',
-            'emoji' => ':boom:',
-            'level' => env('LOG_LEVEL', 'critical'),
-            'replace_placeholders' => true,
-        ],
-
-        'papertrail' => [
+        'stdout' => [
             'driver' => 'monolog',
             'level' => env('LOG_LEVEL', 'debug'),
-            'handler' => env('LOG_PAPERTRAIL_HANDLER', SyslogUdpHandler::class),
-            'handler_with' => [
-                'host' => env('PAPERTRAIL_URL'),
-                'port' => env('PAPERTRAIL_PORT'),
-                'connectionString' => 'tls://'.env('PAPERTRAIL_URL').':'.env('PAPERTRAIL_PORT'),
+            'handler' => StreamHandler::class,
+            'formatter' => env('LOG_STDERR_FORMATTER'),
+            'with' => [
+                'stream' => 'php://stdout',
             ],
             'processors' => [PsrLogMessageProcessor::class],
         ],

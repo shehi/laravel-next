@@ -1,91 +1,45 @@
-# Laravel Breeze - Next.js Edition 🏝️
+# Frontend
 
-## Introduction
+## Infrastructure
 
-This repository is an implementation of the [Laravel Breeze](https://laravel.com/docs/starter-kits) application / authentication starter kit frontend in [Next.js](https://nextjs.org). All of the authentication boilerplate is already written for you - powered by [Laravel Sanctum](https://laravel.com/docs/sanctum), allowing you to quickly begin pairing your beautiful Next.js frontend with a powerful Laravel backend.
+* _NextJS 13_ (with React 18) on top of **Typescript 5.1** _Dockerized_: NextJS server exposed on port `3000` of `node` container. Upstreamed to `nginx` at port `3000`.
+* Latest Node LTS with Cypress pre-installed.
+* Unprivileged user `node`, with `sudo` powers provided.
+* Read [Main README file](../README.md) regarding:
+    * how to spin up the containers,
+    * how to provide `$MYUID` and `$MYGID` env vars in order to avoid permission issues.
 
-## Official Documentation
+## Usage
 
-### Installation
+> Please start DEV env before tests
 
-First, create a Next.js compatible Laravel backend by installing Laravel Breeze into a [fresh Laravel application](https://laravel.com/docs/installation) and installing Breeze's API scaffolding:
+1. Once containers are spun up, enter `node` terminal via: `docker compose exec node bash -l`.
+2. `cd frontend`
+3. `npm i`
+4. Build for PROD: `npm run build`
+5. Start PROD build: `npm start`
+    * Access: http://localhost:3000 
+6. Start DEV env: `npm run dev`
+    * Access: http://localhost:3000
+7. To open Cypress: `cypress open`
+8. To run tests: `cypress run`
+    * Single Cypress E2E test provided.
 
-```bash
-# Create the Laravel application...
-laravel new next-backend
+## Design Considerations
 
-cd next-backend
-
-# Install Breeze and dependencies...
-composer require laravel/breeze --dev
-
-php artisan breeze:install api
-
-# Run database migrations...
-php artisan migrate
-```
-
-Next, ensure that your application's `APP_URL` and `FRONTEND_URL` environment variables are set to `http://localhost:8000` and `http://localhost:3000`, respectively.
-
-After defining the appropriate environment variables, you may serve the Laravel application using the `serve` Artisan command:
-
-```bash
-# Serve the application...
-php artisan serve
-```
-
-Next, clone this repository and install its dependencies with `yarn install` or `npm install`. Then, copy the `.env.example` file to `.env.local` and supply the URL of your backend:
-
-```
-NEXT_PUBLIC_BACKEND_URL=http://localhost:8000
-```
-
-Finally, run the application via `npm run dev`. The application will be available at `http://localhost:3000`:
-
-```
-npm run dev
-```
-
-> Note: Currently, we recommend using `localhost` during local development of your backend and frontend to avoid CORS "Same-Origin" issues.
-
-### Authentication Hook
-
-This Next.js application contains a custom `useAuth` React hook, designed to abstract all authentication logic away from your pages. In addition, the hook can be used to access the currently authenticated user:
-
-```js
-const ExamplePage = () => {
-    const { logout, user } = useAuth({ middleware: 'auth' })
-
-    return (
-        <>
-            <p>{user?.name}</p>
-
-            <button onClick={logout}>Sign out</button>
-        </>
-    )
-}
-
-export default ExamplePage
-```
-
-> Note: You will need to use [optional chaining](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Optional_chaining) (`user?.name` instead of `user.name`) when accessing properties on the user object to account for Next.js's initial server-side render.
-
-### Named Routes
-
-For convenience, [Ziggy](https://github.com/tighten/ziggy#spas-or-separate-repos) may be used to reference your Laravel application's named route URLs from your React application.
-
-## Contributing
-
-Thank you for considering contributing to Breeze Next! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-Please review [our security policy](https://github.com/laravel/breeze-next/security/policy) on how to report security vulnerabilities.
-
-## License
-
-Laravel Breeze Next is open-sourced software licensed under the [MIT license](LICENSE.md).
+* **Typescript** and only!
+* **Modular folder structure** lies within `src/` folder.
+* **Data Loading**:
+  * Since data is quite simple, by default it loads during SSG (server-side generation). I included `src/hooks/useHasMounted` hook which can be used to force client-side data loading.
+  * All data-loadings are performed through `SWR` lib, asynchronously with suspense enabled. Extremely simple `Suspense` was implemented to wait for the data to load and `List` component to be ready.
+  * Data comes from Backend in JSON format.
+  * Since data has no unique Identifier, I used `realName` field as one.
+* **Object Model (CardObject)** in typed within `src/schema/card.ts` and used across source code, wherever applicable. _Come think of it:_ **maybe CardObject is a bad naming, maybe it should be PlayerObject**. :)
+* `CardsContext` to track card sorting and active/selected card.
+* **Views** are implemented as requested:
+  * via _TailwindCSS_ that comes with NextJS (tho not my first preference, I prefer Bootstrap via SCSS).
+  * **Grid-based layout**, 4x2 grid-ing.
+  * Semantic Markup, as much as possible.
+  * **No custom (S)CSS** but if necessary, can easily be implemented via `Module-SCSS` support of NextJS (can demonstrate during an interview).
+  * **UX** as much as possible: button disabled whenever clicking them is not appropriate (during loading, or data missing etc)
+  * **Layout Shift** was minimized as much as possible, via grid layout.
